@@ -1,0 +1,109 @@
+/* Estilos exclusivos da página /materiais (demo de consumo de API).
+   Arquivo novo — o style.css original não foi alterado.
+   Reaproveita as variáveis de tema já definidas no body (--bg-color,
+   --bg-card, --bg-elevated) para não quebrar a identidade visual do JOVI.
+   Sem media queries, conforme solicitado (sem responsividade). */
+
+.materiais-pagina {
+  min-height: 100vh;
+  background: var(--bg-color);
+  color: inherit;
+  padding: 40px 24px 80px;
+  box-sizing: border-box;
+}
+
+.materiais-topo {
+  max-width: 1100px;
+  margin: 0 auto 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.materiais-voltar {
+  text-decoration: none;
+  font-weight: 600;
+  color: inherit;
+  opacity: 0.75;
+}
+
+.materiais-voltar:hover {
+  opacity: 1;
+}
+
+.materiais-cabecalho {
+  max-width: 1100px;
+  margin: 0 auto 40px;
+}
+
+.materiais-cabecalho h1 {
+  font-size: 2rem;
+  margin: 8px 0 12px;
+}
+
+.materiais-cabecalho p {
+  max-width: 640px;
+  opacity: 0.85;
+  line-height: 1.5;
+}
+
+.materiais-status {
+  max-width: 1100px;
+  margin: 0 auto 24px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  background: var(--bg-elevated);
+}
+
+.materiais-status--erro {
+  border: 1px solid #e5484d;
+}
+
+.materiais-recarregar {
+  margin-top: 10px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.materiais-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.materiais-card {
+  background: var(--bg-card);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.materiais-card img {
+  display: block;
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.materiais-card-corpo {
+  padding: 14px 16px;
+}
+
+.materiais-card-numero {
+  font-size: 0.75rem;
+  opacity: 0.6;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.materiais-card-titulo {
+  font-size: 0.95rem;
+  margin: 0;
+  line-height: 1.4;
+  text-transform: capitalize;
+}
