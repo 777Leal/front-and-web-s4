@@ -8,7 +8,7 @@ import Publico from "../components/Publico.jsx";
 import Galeria from "../components/Galeria.jsx";
 import Equipe from "../components/Equipe.jsx";
 import Contato from "../components/Contato.jsx";
-import { SOLUCAO_IMAGENS, TEMA_STORAGE_KEY, TEMAS, VIDEO_SOURCES } from "../data/theme.js";
+import { SOLUCAO_IMAGENS, TEMA_STORAGE_KEY, TEMAS, THEME_STYLES, VIDEO_SOURCES } from "../data/theme.js";
 
 function lerTemaSalvo() {
   if (typeof window === "undefined") return "tema1";
@@ -32,10 +32,9 @@ export default function IndexPage() {
   const descricaoRef = useRef(null);
   const scrollProgressRef = useRef(null);
 
-  // TEMA — aplica a classe no <body> e persiste no localStorage.
+  // TEMA — aplica os tokens de cor usados pelas classes Tailwind e persiste a escolha.
   useEffect(() => {
-    document.body.classList.remove("tema1", "tema2", "tema3");
-    document.body.classList.add(theme);
+    document.documentElement.classList.add("scroll-smooth");
     window.localStorage.setItem(TEMA_STORAGE_KEY, theme);
   }, [theme]);
 
@@ -50,6 +49,7 @@ export default function IndexPage() {
     video.dataset.src = novaFonte;
     video.src = novaFonte;
     video.load();
+
   }, [theme]);
 
   // HERO — vídeo controlado pelo scroll + fade do texto + barra de progresso
@@ -115,6 +115,12 @@ export default function IndexPage() {
       duration = heroVideo.duration || 0;
       atualizarHero();
     }
+    function onLoadedData() {
+      heroVideo.classList.add("is-ready");
+    }
+    function onVideoError() {
+      heroVideo.classList.remove("is-ready");
+    }
     function onPlay() {
       heroVideo.pause();
     }
@@ -126,6 +132,8 @@ export default function IndexPage() {
     }
 
     heroVideo.addEventListener("loadedmetadata", onLoadedMetadata);
+    heroVideo.addEventListener("loadeddata", onLoadedData);
+    heroVideo.addEventListener("error", onVideoError);
     heroVideo.addEventListener("play", onPlay);
     heroVideo.addEventListener("seeking", onSeeking);
     heroVideo.addEventListener("seeked", onSeeked);
@@ -189,6 +197,7 @@ export default function IndexPage() {
     if (heroVideo.readyState >= 1) {
       duration = heroVideo.duration;
     }
+    if (heroVideo.readyState >= 2) onLoadedData();
 
     window.addEventListener("scroll", agendarAtualizacao, { passive: true });
     window.addEventListener("resize", agendarAtualizacao, { passive: true });
@@ -196,6 +205,8 @@ export default function IndexPage() {
 
     return () => {
       heroVideo.removeEventListener("loadedmetadata", onLoadedMetadata);
+      heroVideo.removeEventListener("loadeddata", onLoadedData);
+      heroVideo.removeEventListener("error", onVideoError);
       heroVideo.removeEventListener("play", onPlay);
       heroVideo.removeEventListener("seeking", onSeeking);
       heroVideo.removeEventListener("seeked", onSeeked);
@@ -216,7 +227,7 @@ export default function IndexPage() {
   const imagensDoTema = SOLUCAO_IMAGENS[theme];
 
   return (
-    <>
+    <div style={THEME_STYLES[theme]} className="min-h-screen overflow-x-clip bg-jovi-background font-sans text-jovi-primary transition-colors duration-300">
       <Head>
         <title>Jovi</title>
       </Head>
@@ -232,6 +243,7 @@ export default function IndexPage() {
       />
       <main>
         <Hero
+          theme={theme}
           heroTrackRef={heroTrackRef}
           heroVideoRef={heroVideoRef}
           vejaRef={vejaRef}
@@ -246,6 +258,6 @@ export default function IndexPage() {
         <Equipe />
         <Contato />
       </main>
-    </>
+    </div>
   );
 }
